@@ -1,0 +1,49 @@
+<div class="container mx-auto px-4">
+  <% @posts.each do |post| %>
+    <div class="max-w-lg mx-auto mb-4 bg-white rounded-lg shadow overflow-hidden">
+      <div class="flex items-center p-4">
+        <span class="text-gray-700 font-medium">
+          <%= link_to post.user.username, profile_path(post.user.id), method: :get, class: "hover:text-blue-600" %>
+        </span>
+      </div>
+
+      <%= link_to post_path(post) do %>
+        <% if post.image? %>
+          <%= image_tag post.image.url, class: "w-full h-auto" %>
+        <% end %>
+        <div class="px-4 py-2">
+          <p class="text-gray-800 text-lg"><%= post.body %></p>
+        </div>
+      <% end %>
+
+      <div class="px-4 py-2 flex justify-between items-center">
+        <% if post.liked?(current_user) %>
+          <%= button_to post_like_path(post, find_user_like(current_user, post)), method: :delete, class: "text-red-500 hover:text-red-700", form: { class: "inline" } do %>
+            ❤️
+          <% end %>
+        <% else %>
+          <%= button_to post_likes_path(post), method: :post, class: "text-gray-400 hover:text-red-500", form: { class: "inline" } do %>
+            ♡
+          <% end %>
+        <% end %>
+        <span class="text-sm text-gray-500">
+              <%= "Total likes: #{post.likes.size}" %>
+        </span>
+      </div>
+
+      <div class="comments-section mt-4 px-4 pb-4">
+        <% post.comments.each do |comment| %>
+          <div class="bg-gray-100 rounded p-3 mb-2">
+            <p class="text-gray-800 font-semibold"><%= comment.body %></p>
+            <p class="text-gray-600 text-sm">by <%= comment.user.username %></p>
+            <% if comment.user == current_user %>
+              <%= link_to "Delete Comment", post_comment_path(post, comment), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "text-red-500 hover:text-red-700 text-xs" %>
+            <% end %>
+          </div>
+        <% end %>
+        <%= link_to "Add Comment", new_post_comment_path(post), class: "text-blue-600 hover:text-blue-800" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+

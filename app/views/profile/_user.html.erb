@@ -1,0 +1,60 @@
+<div class="container mx-auto px-4">
+  <div class="flex justify-between items-center mb-4">
+    <h1 class="text-3xl font-semibold text-gray-800"><%= user.username %></h1>
+    <div class="flex space-x-4">
+      <%= render 'profile/follower_count', user: user %>
+      <div class="text-gray-600">
+        <p><span class="font-semibold">Following:</span> <%= user.followees.count %></p>
+        <p><span class="font-semibold">Likes:</span> <%= user.likes.size %></p>
+        <p><span class="font-semibold">Posts:</span> <%= user.posts.size %></p>
+      </div>
+      <% if user == current_user %>
+        <%= link_to "Edit Profile", edit_user_registration_path, class: "text-blue-600 hover:text-blue-800 font-medium" %>
+      <% else if current_user %>
+          <%= render 'profile/follow_button', user: user %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <% user.posts.each do |post| %>
+      <div class="max-w-sm rounded overflow-hidden shadow-lg m-auto">
+        <%= link_to post_path(post) do %>
+          <%= image_tag post.image.url, class: "w-full h-auto" if post.image? %>
+        <% end %>
+        <div class="px-6 py-4">
+          <div class="font-bold text-xl mb-2"><%= post.user.username %></div>
+          <p class="text-gray-700 text-base">
+            <%= truncate(post.body, length: 100) %>
+          </p>
+        </div>
+        <div class="px-6 pt-4 pb-2 flex items-center">
+          <% if liked?(current_user.id, post.id) %>
+            <%= button_to post_like_path(post, post.likes.find_by(user_id: current_user.id)), method: :delete, class: "text-red-500 hover:text-red-700", form: { class: "inline" } do %>
+              ❤️
+            <% end %>
+          <% else %>
+            <%= button_to post_likes_path(post), method: :post, class: "text-gray-400 hover:text-red-500", form: { class: "inline" } do %>
+              ♡
+            <% end %>
+          <% end %>
+          <span class="ml-2 text-gray-600"><%= pluralize(post.likes.size, 'like') %></span>
+        </div>
+        <div class="px-6 pb-4">
+          <% post.comments.each do |comment| %>
+            <div class="flex items-center mb-2">
+              <p class="text-gray-800 font-bold"><%= comment.user.username %>:</p>
+              <p class="text-gray-700 ml-2"><%= comment.body %></p>
+              <% if comment.user == current_user %>
+                <%= link_to "Delete", post_comment_path(post, comment), method: :delete, data: { turbo_method: :delete ,turbo_confirm: "Are you sure?" }, class: "text-red-500 ml-2 hover:text-red-700" %>
+              <% end %>
+            </div>
+          <% end %>
+          <%= link_to "Add Comment", new_post_comment_path(post), class: "text-blue-500 hover:underline" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+

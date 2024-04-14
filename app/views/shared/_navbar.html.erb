@@ -1,0 +1,20 @@
+<nav class="bg-gray-800">
+  <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+    <div class="flex items-center">
+      <a href="/" class="text-white text-lg font-bold">Fake Insta</a>
+    </div>
+    <div class="hidden md:block">
+      <ul class="ml-4 flex items-center space-x-4">
+        <li><a href="/" class="text-white hover:text-gray-300">Main</a></li>
+        <% if user_signed_in? %>
+          <a class="text-white hover:text-gray-300"> <%= button_to 'Feed', feed_path, method: :get %> </a>
+          <a class="text-white hover:text-gray-300"> <%= button_to 'View my profile', profile_path(current_user), method: :get %> </a>
+          <a class="text-white hover:text-gray-300"> <%= button_to 'Create new post', new_post_path, method: :get %> </a>
+          <a class="text-white hover:text-gray-300"> <%= button_to 'Sign out', destroy_user_session_path, method: :delete %> </a>
+        <% else %>
+          <a class="text-white hover:text-gray-300"> <%= button_to 'Sign in', new_user_session_path, method: :post %> </a>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
