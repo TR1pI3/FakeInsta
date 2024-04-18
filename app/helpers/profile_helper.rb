@@ -8,5 +8,4 @@ module ProfileHelper
   def dom_id_for_follower(follower)
     dom_id(follower)
   end
-
 end

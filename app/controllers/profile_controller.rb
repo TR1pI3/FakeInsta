@@ -12,7 +12,7 @@ class ProfileController < ApplicationController
           turbo_stream.replace(dom_id_for_follower(@user),
                                partial: 'profile/follow_button',
                                locals: { user: @user }),
-          turbo_stream.update("#{@user.id}-follower-count",
+          turbo_stream.replace("#{@user.id}-follower-count",
                               partial: 'profile/follower_count',
                               locals: { user: @user })
         ]
@@ -28,7 +28,7 @@ class ProfileController < ApplicationController
           turbo_stream.replace(dom_id_for_follower(@user),
                                partial: 'profile/follow_button',
                                locals: { user: @user }),
-          turbo_stream.update("#{@user.id}-follower-count",
+          turbo_stream.replace("#{@user.id}-follower-count",
                               partial: 'profile/follower_count',
                               locals: { user: @user })
         ]

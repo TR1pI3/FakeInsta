@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { registrations: "users/registrations" }
+  devise_for :users, controllers: { registrations: 'users/registrations' }
   root 'posts#index'
   resources :posts do
     resources :comments, only: %i[new create destroy]
@@ -10,4 +10,3 @@ Rails.application.routes.draw do
   delete 'profile/unfollow', to: 'profile#unfollow'
   get 'feed', to: 'feed#index'
 end
-

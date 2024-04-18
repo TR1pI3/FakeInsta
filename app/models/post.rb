@@ -7,7 +7,6 @@ class Post < ApplicationRecord
   validates :image, presence: true
   validates :body, presence: true, length: { maximum: 450 }
 
-
   def liked?(user)
     Like.exists?(user_id: user, post_id: id)
   end

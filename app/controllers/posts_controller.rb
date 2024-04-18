@@ -1,5 +1,4 @@
 class PostsController < ApplicationController
-
   def index
     @posts = Post.all.includes(:comments, :likes).to_a
   end
@@ -36,9 +35,9 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
-    if @post.destroy
-      redirect_to posts_path, notice: 'Post was successfully deleted'
-    end
+    return unless @post.destroy
+
+    redirect_to posts_path, notice: 'Post was successfully deleted'
   end
 
   private

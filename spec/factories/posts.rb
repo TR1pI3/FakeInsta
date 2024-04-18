@@ -6,8 +6,8 @@ FactoryBot.define do
 
     trait :liked do
       after(:create) do |post, evaluator|
-        create(:like, post: post, user: evaluator.user)
+        create(:like, post:, user: evaluator.user)
+      end
     end
   end
-  end
-  end
+end
